@@ -7,7 +7,7 @@ class YAMLParser:
     """ YAML parser for optical flow and image reconstruction config files """
 
     def __init__(self, config):
-        self.reset_config()
+        self.reset_config() # set some default values to self._config
         self.parse_config(config)
         self.get_device()
         self.init_seeds()

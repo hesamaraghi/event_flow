@@ -51,7 +51,7 @@ def train(args, config_parser):
     mlflow.log_param("prev_runid", args.prev_runid)
     config = config_parser.combine_entries(config)
     print("MLflow dir:", mlflow.active_run().info.artifact_uri[:-9])
-
+    print("num_bins:", config["model"]["num_bins"],flush=True)
     # log git diff
     save_diff("train_diff.txt")
 
@@ -84,6 +84,7 @@ def train(args, config_parser):
 
     # optimizers
     optimizer = eval(config["optimizer"]["name"])(model.parameters(), lr=config["optimizer"]["lr"])
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience = 10)
     optimizer.zero_grad()
 
     # simulation variables
@@ -94,9 +95,10 @@ def train(args, config_parser):
 
     # training loop
     data.shuffle()
-    while True:
+    while True:   
+        
         for inputs in dataloader:
-
+            
             if data.new_seq:
                 data.new_seq = False
 
@@ -106,6 +108,10 @@ def train(args, config_parser):
 
             if data.seq_num >= len(data.files):
                 mlflow.log_metric("loss", train_loss / (data.samples + 1), step=data.epoch)
+                
+                scheduler.step(train_loss / (data.samples + 1))
+                lr = optimizer.param_groups[0]['lr']
+                mlflow.log_metric("lr",lr,step=data.epoch)
 
                 with torch.no_grad():
                     if train_loss / (data.samples + 1) < best_loss:
@@ -188,6 +194,18 @@ def train(args, config_parser):
                     end="\r",
                 )
 
+       
+            
+        print(
+            "Train Epoch: {:04d} [{:03d}/{:03d} ({:03d}%)] Loss: {:.6f}".format(
+                data.epoch,
+                data.seq_num,
+                len(data.files),
+                int(100 * data.seq_num / len(data.files)),
+                train_loss / (data.samples + 1)
+            ), flush=True
+        )
+        
         if end_train:
             break
 
@@ -211,6 +229,7 @@ if __name__ == "__main__":
         default="",
         help="pre-trained model to use as starting point",
     )
+ 
     args = parser.parse_args()
 
     # launch training

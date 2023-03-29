@@ -11,9 +11,9 @@ model:
     encoding: voxel # voxel/cnt
     round_encoding: False # for voxel encoding
     norm_input: False # normalize input
-    num_bins: 5
+    num_bins: 11
     base_num_channels: 32
-    kernel_size: 3
+    kernel_size: 5
     activations: [relu, Null] # activations for ff and rec neurons
     mask_output: True
 
