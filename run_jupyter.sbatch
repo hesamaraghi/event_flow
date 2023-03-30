@@ -9,10 +9,10 @@
 #SBATCH --open-mode=truncate
 
 # The default Quality of Service is the 'short' QoS (maximum run time: 4 hours)
-#SBATCH --qos=short
+#SBATCH --qos=medium
 
 # The default run (wall-clock) time is 1 minute
-#SBATCH --time=4:00:00
+#SBATCH --time=36:00:00
 
 # The default number of parallel tasks per job is 1
 #SBATCH --ntasks=1
@@ -22,7 +22,7 @@
 #SBATCH --cpus-per-task=4
 
 # The default memory per node is 1024 megabytes (1GB) (for multiple tasks, specify --mem-per-cpu instead)
-#SBATCH --mem=16000
+#SBATCH --mem=32000
 
 # Request a GPU
 #SBATCH --gres=gpu:1
