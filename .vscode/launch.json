@@ -1,0 +1,31 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python:  Eval Flow",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/eval_flow.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "EVFlowNet",
+                "--config", "configs/eval_MVSEC.yml",   
+            ]
+        },
+        {
+            "name": "Python:  Train Flow",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/train_flow.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "--config", "configs/train_flow.yml",  "--overwrite_config","{}" 
+            ]
+        }
+    ]
+}
