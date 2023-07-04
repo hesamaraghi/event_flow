@@ -19,23 +19,20 @@
 
 # The default number of CPUs per task is 1 (note: CPUs are always allocated to jobs per 2)
 # Request 1 CPU per active thread of your program (assume 1 unless you specifically set this)
-#SBATCH --cpus-per-task=2
+#SBATCH --cpus-per-task=8
 
 # The default memory per node is 1024 megabytes (1GB) (for multiple tasks, specify --mem-per-cpu instead)
-#SBATCH --mem=8000
+#SBATCH --mem=64000
 
 # Request a GPU
-#SBATCH --gres=gpu:1
 
 # Set mail type to 'END' to receive a mail when the job finishes
 # Do not enable mails when submitting large numbers (>20) of jobs at once
 #SBATCH --mail-type=END
 
 # Measure GPU usage of your job (initialization)
-previous=$(/usr/bin/nvidia-smi --query-accounted-apps='gpu_utilization,mem_utilization,max_memory_usage,time' --format='csv' | /usr/bin/tail -n '+2')
 
 # Use this simple command to check that your sbatch settings are working (it should show the GPU that you requested)
-/usr/bin/nvidia-smi
 
 # Your job commands go below here
 
@@ -44,14 +41,9 @@ previous=$(/usr/bin/nvidia-smi --query-accounted-apps='gpu_utilization,mem_utili
 # module load cuda/11.2 cudnn/11.2-8.1.1.33
 
 # Computations should be started with 'srun'. For example:
-echo "eval flow: for run id:" $@
 
-# srun python train_flow.py "$@"
-
-srun python eval_flow.py "$@" --config configs/eval_MVSEC.yml
+srun python  "$@"
 
 # Your job commands go above here
 
 # Measure GPU usage of your job (result)
-/usr/bin/nvidia-smi --query-accounted-apps='gpu_utilization,mem_utilization,max_memory_usage,time' --format='csv' | /usr/bin/grep -v -F "$previous"
-

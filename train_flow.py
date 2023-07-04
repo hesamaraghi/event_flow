@@ -32,7 +32,7 @@ from models.model import (
 )
 from utils.gradients import get_grads
 from utils.utils import load_model, save_csv, save_diff, save_model
-from utils.visualization import Visualization
+# from utils.visualization import Visualization
 
 
 def train(args, config_parser):
@@ -93,12 +93,13 @@ def train(args, config_parser):
     end_train = False
     grads_w = []
 
+    
     # training loop
     data.shuffle()
     while True:   
         
         for inputs in dataloader:
-            
+         
             if data.new_seq:
                 data.new_seq = False
 

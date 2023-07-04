@@ -22,10 +22,10 @@
 #SBATCH --cpus-per-task=2
 
 # The default memory per node is 1024 megabytes (1GB) (for multiple tasks, specify --mem-per-cpu instead)
-#SBATCH --mem=12000
+#SBATCH --mem=8000
 
 # Request a GPU
-#SBATCH --gres=gpu
+#SBATCH --gres=gpu:a40:1
 
 # Set mail type to 'END' to receive a mail when the job finishes
 # Do not enable mails when submitting large numbers (>20) of jobs at once
@@ -44,11 +44,8 @@ previous=$(/usr/bin/nvidia-smi --query-accounted-apps='gpu_utilization,mem_utili
 # module load cuda/11.2 cudnn/11.2-8.1.1.33
 
 # Computations should be started with 'srun'. For example:
-echo "Input to sbatch: " $@
 
-# srun python train_flow.py "$@"
-
-srun python train_flow.py "$@"
+srun python  "$@"
 
 # Your job commands go above here
 

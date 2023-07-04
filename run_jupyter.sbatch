@@ -19,10 +19,10 @@
 
 # The default number of CPUs per task is 1 (note: CPUs are always allocated to jobs per 2)
 # Request 1 CPU per active thread of your program (assume 1 unless you specifically set this)
-#SBATCH --cpus-per-task=4
+#SBATCH --cpus-per-task=2
 
 # The default memory per node is 1024 megabytes (1GB) (for multiple tasks, specify --mem-per-cpu instead)
-#SBATCH --mem=32000
+#SBATCH --mem=8000
 
 # Request a GPU
 #SBATCH --gres=gpu:1
@@ -35,6 +35,6 @@
 # module use /opt/insy/modulefiles
 # module load cuda/11.2 cudnn/11.2-8.1.1.33
 cat /etc/hosts
-#jupyter lab --ip=0.0.0.0 --port=8888
+jupyter lab --ip=0.0.0.0 --port=8888
 #mlflow ui --host=0.0.0.0 --port=8888
-jupyter notebook --ip=0.0.0.0 --port=8888
+#jupyter notebook --ip=0.0.0.0 --port=8888
